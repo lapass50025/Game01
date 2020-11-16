@@ -60,18 +60,33 @@ void ChangeInformation(void)
     int n = 0;
 
     // -1부터 1까지 랜덤 값 얻기
-    n = rand() % 2 - 1;
-    man.x = man.x + n;
-    n = rand() % 2 - 1;
-    man.y = man.y + n;
+    if( man.survival )
+    {
+        n = rand() % 3 - 1;
+        man.x = man.x + n;
+        n = rand() % 3 - 1;
+        man.y = man.y + n;
+    }
+
+    // 생존 여부 검사하기
+    if( (man.x <= 0) || (man.x >= ROWS) ||  (man.y <= 0) || (man.y >= COLS) )
+    {
+        man.survival = 0;
+    }
 
     for (i = 0; i < 10; i++)
     {
         // -1부터 1까지 랜덤 값 얻기
-        n = rand() % 2 - 1;
+        n = rand() % 3 - 1;
         enemy[i].x = enemy[i].x + n;
-        n = rand() % 2 - 1;
+        n = rand() % 3 - 1;
         enemy[i].y = enemy[i].y + n;
+
+        // 생존 여부 검사하기
+        if( (enemy[i].x <= 0) || (enemy[i].x >= ROWS) || (enemy[i].y <= 0) || (enemy[i].y >= COLS) )
+        {
+            enemy[i].survival = 0;
+        }
     }
 }
 
@@ -102,7 +117,7 @@ void Display(void)
             else
             {
                 // 주인공 정보 출력하기
-                if( (man.x == i) && (man.y == j) )
+                if( (man.survival) && (man.x == i) && (man.y == j) )
                 {
                     cout << man.display;
                     j = j + 1;
@@ -111,7 +126,7 @@ void Display(void)
                 // 적들 정보 출력하기
                 for( k = 0; k < 10; k++)
                 {
-                    if( (enemy[k].x == i) && (enemy[k].y == j) )
+                    if( (enemy[k].survival) && (enemy[k].x == i) && (enemy[k].y == j) )
                     {
                         cout << enemy[k].display;
                         j = j + 1;
